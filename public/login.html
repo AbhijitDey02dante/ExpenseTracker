@@ -4,45 +4,32 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SignUp</title>
+    <title>Login</title>
     <link rel="stylesheet" href="css/signup.css">
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
     <div class="middleContainer">
         <form class="signupForm">
-            <h1>SignUp</h1>
+            <h1>Login</h1>
             <p id="submitMessage"></p>
             <div>
-                <p>
-                    <label for="name">Name:</label>
-                    <input type="text" name="name" id="name" required>
-                </p>
                 <p>
                     <label for="email">Email:</label>
                     <input type="email" name="email" id="email" required>
                 </p>
                 <p>
-                    <label for="mobile">Mobile:</label>
-                    <input type="number" name="mobile" id="mobile" maxlength="10" minlength="10" required>
-                </p>
-                <p>
                     <label for="password">Password:</label>
                     <input type="password" name="password" id="password">
                 </p>
-                <p>
-                    <label for="cPassword">Confirm password:</label>
-                    <input type="password" name="cPassword" id="cPassword">
-                    <p id="confirmPasswordText"></p>
-                </p>
             </div>
-            <button id="submitButton" type="submit" class="btn" disabled>Submit</button>
-            <a id="loginButton" href="login.html">Login</a>
+            <button id="submitButton" type="submit" class="btn">Submit</button>
+            <a id="loginButton" href="signup.html">signup</a>
         </form>
     </div>
 
     
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="js/signup.js"></script>
+    <script src="js/login.js"></script>
 </body>
 </html>
