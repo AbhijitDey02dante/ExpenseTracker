@@ -17,12 +17,12 @@ form.addEventListener('submit',(e)=>{
         mobile:mobile.value,
         password:password.value
     }
-    axios.post("http://localhost:3000/login",obj)
+    axios.post("http://localhost:3000/signup",obj)
     .then((result)=>{
         const span=document.createElement('span');
         if(result.data.success){
             span.classList.add('active');
-            span.innerText='User added';
+            span.innerText='Successfuly signed up';
             
             nameId.value='';
             email.value='';
@@ -31,7 +31,7 @@ form.addEventListener('submit',(e)=>{
             cPassword.value='';
         }
         else{
-            span.innerText='User already exists';
+            span.innerText='User already exists, Please Login';
         }
         submitMessage.appendChild(span);
         setTimeout(()=>span.remove(),3000);
