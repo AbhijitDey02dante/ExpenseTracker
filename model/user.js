@@ -20,8 +20,7 @@ const User=sequelize.define('user',{
     },
     mobile:{
         type:Sequelize.STRING,
-        allowNull:false,
-        unique:true
+        allowNull:false
     },
     password:{
         type:Sequelize.STRING,

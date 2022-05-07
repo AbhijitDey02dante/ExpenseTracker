@@ -9,7 +9,7 @@ form.addEventListener('submit',(e)=>{
         email:email.value,
         password:password.value
     }
-    console.log(obj);
+    // console.log(obj);
 
     axios.post("http://localhost:3000/login",obj)
     .then((res)=>{

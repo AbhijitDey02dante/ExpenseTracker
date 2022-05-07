@@ -1,4 +1,5 @@
 const bcrypt=require('bcrypt');
+const jwt=require('jsonwebtoken');
 
 const User=require('../model/user');
 
@@ -26,4 +27,31 @@ exports.addUser=async (req,res,next)=>{
         console.log(e);
         res.json({success:false});
     }
+}
+
+function generateAccessToken(username){
+    return jwt.sign(username,process.env.TOKEN_SECRET);
+}
+
+
+exports.getUser = (req,res,next) => {
+    const email=req.body.email;
+    User.findAll({where:{email:email}})
+    .then(result=>{
+        bcrypt.compare(req.body.password,result[0].password, function(error,resolved){
+            if(error){
+                console.log("error");
+            }
+            if(resolved){
+                const token=generateAccessToken(result[0].id);
+                res.json(token);
+            }
+            else{
+                res.status(401).json({success:false,message:"Password doesn't match"});
+            }
+        })
+    })
+    .catch(error=>{
+        res.status(404).json({success:false,message:"User not found"});
+    })
 }
