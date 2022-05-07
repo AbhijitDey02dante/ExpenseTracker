@@ -1,0 +1,11 @@
+*{
+    box-sizing: content-box;
+}
+body{
+    display: block;
+    min-height: 100vh;
+    margin:0;
+    padding: 0;
+    font-family: sans-serif;
+    background-color: rgb(240, 255, 240);
+}
