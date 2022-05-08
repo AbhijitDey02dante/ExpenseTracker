@@ -29,8 +29,8 @@ exports.addUser=async (req,res,next)=>{
     }
 }
 
-function generateAccessToken(username){
-    return jwt.sign(username,process.env.TOKEN_SECRET);
+function generateAccessToken(id){
+    return jwt.sign(id,process.env.TOKEN_SECRET);
 }
 
 
@@ -43,7 +43,10 @@ exports.getUser = (req,res,next) => {
                 console.log("error");
             }
             if(resolved){
-                const token=generateAccessToken(result[0].id);
+                const obj={
+                    id:`${result[0].id}`
+                }
+                const token=generateAccessToken(JSON.stringify(obj));
                 res.json(token);
             }
             else{
@@ -54,4 +57,9 @@ exports.getUser = (req,res,next) => {
     .catch(error=>{
         res.status(404).json({success:false,message:"User not found"});
     })
+}
+
+exports.checkUser=(req,res,next)=>{
+    console.log('logged in');
+    res.json({success:true});
 }

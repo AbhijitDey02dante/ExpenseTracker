@@ -7,7 +7,7 @@
     background-color: rgb(135, 167, 135);
     transition: all 0.5s;
 }
-.btn:hover,.btn:active{
+.btn:hover:enabled,.btn:active:enabled{
     background-color: rgb(85, 105, 85);
     box-shadow: 0 3px 3px black;
 }
@@ -33,6 +33,7 @@ input::-webkit-inner-spin-button {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
 .signupForm{
     margin: 0 10px;
@@ -42,7 +43,6 @@ input::-webkit-inner-spin-button {
     padding: 10px;
     background-color: rgb(180, 217, 180);
     position: relative;
-    width:100%;
 }
 #loginButton{
     position: absolute;
