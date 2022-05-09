@@ -1,5 +1,7 @@
 const bcrypt=require('bcrypt');
 const jwt=require('jsonwebtoken');
+const Razorpay=require('razorpay');
+const Order = require('../model/order');
 
 const User=require('../model/user');
 
@@ -62,5 +64,50 @@ exports.getUser = (req,res,next) => {
 exports.checkUser=(req,res,next)=>{
     User.findAll({where:{id:req.user.id}})
     .then(result=>res.json(result))
+    .catch(error=>console.log(error));
+}
+
+
+// Razorpay add
+var instance = new Razorpay({
+    key_id: process.env.RAZOR_KEY_ID,
+    key_secret: process.env.RAZOR_KEY_SECRET,
+});
+
+exports.buyPremium=(req,res,next)=>{
+    console.log(req.body);
+    var options = {
+        amount: req.body.amount,  // amount in the smallest currency unit
+        currency: "INR",
+        receipt: "rcp1"
+    };
+    instance.orders.create(options, function(err,order){
+        res.json({orderId:order.id});
+    })
+}
+
+exports.paymentVerify=(req,res)=>{
+    let body=req.body.response.razorpay_order_id + "|" + req.body.response.razorpay_payment_id;
+     let crypto = require("crypto");
+     let expectedSignature = crypto.createHmac('sha256', process.env.RAZOR_KEY_SECRET)
+                                     .update(body.toString())
+                                     .digest('hex');
+                                     console.log("sig received " ,req.body.response.razorpay_signature);
+                                     console.log("sig generated " ,expectedSignature);
+     let response = {"signatureIsValid":"false"}
+     if(expectedSignature === req.body.response.razorpay_signature)
+      response={"signatureIsValid":"true"}
+        res.send(response);
+     }
+
+exports.addOrder=(req,res,next)=>{
+    Order.create({orderId:req.body.orderid, userId:req.user.id})
+    .then(()=>res.json({success:true}))
+    .catch(error=>console.log(error));
+}
+
+exports.getOrder=(req,res,next)=>{
+    Order.findAll({where:{userId:req.user.id}})
+    .then((output)=>res.json(output))
     .catch(error=>console.log(error));
 }

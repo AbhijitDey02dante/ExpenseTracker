@@ -22,6 +22,18 @@ configToken = {
 axios.get("http://localhost:3000/authenticate",configToken)
 .then(result=>{
     welcomeMessage.innerText="Welcome, "+result.data[0].name+"!!!";
+    axios.get('http://localhost:3000/getOrder',configToken)
+    .then((result)=>{
+        if(result.data.length>0){
+            mode.style.display='inline';
+           if(localStorage.getItem('mode')!=0)
+           {
+               console.log('dark');
+               document.body.classList.toggle('active');
+           }
+        }
+    })
+    .catch(()=>console.log("not a premium member"));
 })
 .catch((error)=>{
     window.location='login.html'

@@ -28,4 +28,10 @@ router.get('/authenticate',authenticateToken,userController.checkUser);
 router.post('/add_expense',authenticateToken,expenseController.postExpense);
 router.get('/get_expense',authenticateToken,expenseController.getExpense);
 
+
+router.post('/buy_premium',authenticateToken,userController.buyPremium);
+router.post("/payment/verify",userController.paymentVerify);
+router.post("/add_order",authenticateToken,userController.addOrder);
+router.get("/getOrder",authenticateToken,userController.getOrder);
+
 module.exports=router;

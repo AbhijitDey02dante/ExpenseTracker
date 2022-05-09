@@ -2,12 +2,17 @@
     box-sizing: content-box;
 }
 body{
+    color:black;
     display: block;
     min-height: 100vh;
     margin:0;
     padding: 0;
     font-family: sans-serif;
     background-color: rgb(240, 255, 240);
+}
+body.active{
+    color: white;
+    background-color: rgb(58, 71, 58);
 }
 .btn{
     background: none;
@@ -21,4 +26,40 @@ body{
 .btn:hover:enabled,.btn:active:enabled{
     background-color: rgb(64, 79, 64);
     box-shadow: 0 3px 3px black;
+}
+#topNav{
+    background-color: rgb(113, 141, 113);
+    font-weight: 700;
+    box-shadow: 0 1px 5px black;
+}
+#topNav ul{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+#topNav ul li{
+    width:25%;
+    padding:10px;
+    text-align: center;
+}
+
+#topNav ul li:last-child{
+    text-align: end;
+}
+a{
+    text-decoration: none;
+    color:black;
+}
+
+.container{
+    padding:20px;
+}
+#mode{
+    padding:20px;
+    display: none;
+}
+#mode:hover{
+    cursor: pointer;
 }
