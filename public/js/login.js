@@ -3,6 +3,9 @@ const password=document.querySelector('#password');
 
 const form=document.querySelector('.signupForm');
 
+localStorage.removeItem('token');
+
+
 form.addEventListener('submit',(e)=>{
     e.preventDefault();
     const obj={

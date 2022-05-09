@@ -12,30 +12,33 @@ configToken = {
  }
  axios.get("http://localhost:3000/authenticate",configToken)
  .then((output)=>{
-    if(output.data[0].spent){
-        const leaderboardContainer=document.querySelector('#leaderboards');
-        leaderboardContainer.style.display='block';
-        mode.style.display='inline';
-    }
-     axios.get('http://localhost:3000/getLeaderboard',configToken)
-     .then(result=>{
-         console.log(result.data);
-        if(result.data.length>0){
+    axios.get('http://localhost:3000/getOrder',configToken)
+    .then(result=>{
+        if(result.data.length>0)
+        {  
+            buyButton.remove();
+            header2.innerText='Premium Member';
+            header3.innerText='';
+            const leaderboardContainer=document.querySelector('#leaderboards');
+            leaderboardContainer.style.display='block';
+            mode.style.display='inline';
             if(localStorage.getItem('mode')!=0)
             {
-                 console.log('dark');
                 document.body.classList.toggle('active');
             }
-            result.data.forEach(element=>{
-                const p=document.createElement('p');
-                p.innerText=element.name+" spent Rs. "+element.spent;
-                console.log(element.spent);
-    
-                leaderboard.append(p);
+            axios.get('http://localhost:3000/getLeaderboard',configToken)
+            .then(result=>{
+                   result.data.forEach(element=>{
+                       const p=document.createElement('p');
+                       p.innerText=element.name+" spent Rs. "+element.spent;
+           
+                       leaderboard.append(p);
+                   })
             })
+            .catch(error=>console.log(error));
         }
-     })
-     .catch(error=>console.log(error));
+    })
+    .catch(error=>console.log(error));
  })
  .catch((error)=>{
      window.location='login.html'
@@ -64,10 +67,23 @@ buyButton.addEventListener('click',(e)=>{
                     //adding Order id
                     axios.post("http://localhost:3000/add_order",{orderid:response.razorpay_order_id},configToken)
                     .then(()=>{
-                        // mode.style.display='inline';
-                        // header2.innerText='You are already a Prime Member';
-                        // header3.innerText='Enjoy the different modes from navigation menu and you can support us more via the pay button';
-                        // localStorage.setItem('mode',0);
+                        buyButton.remove();
+                        header2.innerText='Premium Member';
+                        header3.innerText='';
+                        const leaderboardContainer=document.querySelector('#leaderboards');
+                        leaderboardContainer.style.display='block';
+                        mode.style.display='inline';
+                        localStorage.setItem('mode',0);
+                        axios.get('http://localhost:3000/getLeaderboard',configToken)
+                        .then(result=>{
+                               result.data.forEach(element=>{
+                                   const p=document.createElement('p');
+                                   p.innerText=element.name+" spent Rs. "+element.spent;
+                       
+                                   leaderboard.append(p);
+                               })
+                        })
+                        .catch(error=>console.log(error));
                     })
                     .catch(error=>console.log(error));
                 })
