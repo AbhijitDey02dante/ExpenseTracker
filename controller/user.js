@@ -60,6 +60,7 @@ exports.getUser = (req,res,next) => {
 }
 
 exports.checkUser=(req,res,next)=>{
-    console.log('logged in');
-    res.json({success:true});
+    User.findAll({where:{id:req.user.id}})
+    .then(result=>res.json(result))
+    .catch(error=>console.log(error));
 }

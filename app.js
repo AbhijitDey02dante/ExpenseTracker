@@ -6,6 +6,10 @@ const dotenv=require('dotenv');
 dotenv.config();
 
 const User=require('./model/user');
+const Expense=require('./model/expense');
+
+User.hasMany(Expense);
+Expense.belongsTo(User);
 
 const sequelize=require('./util/database');
 const AuthenticationRouter = require('./routes/Authentication');

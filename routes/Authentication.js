@@ -6,7 +6,6 @@ const router=express.Router();
 
 
 function authenticateToken(req, res, next) {
-    console.log('entered authentication');
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
   
@@ -21,9 +20,12 @@ function authenticateToken(req, res, next) {
 
 
 const userController=require('../controller/user');
+const expenseController=require('../controller/expense');
 
 router.post('/signup',userController.addUser);
 router.post('/login',userController.getUser);
-router.get('/expense',authenticateToken,userController.checkUser);
+router.get('/authenticate',authenticateToken,userController.checkUser);
+router.post('/add_expense',authenticateToken,expenseController.postExpense);
+router.get('/get_expense',authenticateToken,expenseController.getExpense);
 
 module.exports=router;

@@ -1,38 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="js/auth.js"></script>
-
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="css/signup.css">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/expense.css">
 </head>
 <body>
     <div class="expenseContainer">
         <h1>Expense Tracker</h1>
-        <form>
-            <p>
-                <label for="amount">Amount:</label>
-                <input type="number" name="amount" id="amount" placeholder="Amount">
-            </p>
-            <p>
-                <label for="description">Description:</label>
-                <textarea name="description" id="description" cols="30" rows="10" placeholder="Description"></textarea>
-            </p>
-            <p>
-                <label for="category">Category:</label>
-                <select name="category" id="category">
-                    <option value="food">Food</option>
-                    <option value="petrol">Petrol</option>
-                    <option value="salary">Salary</option>
-                </select>
-            </p>
-        </form>
+        <h2></h2>
+        <p>Here is a report of your daily expense</p>
 
-    
+        <ul id="expenseList">
+            <!-- <li>
+                <span>Movies</span>
+                <span>"Watched Doctor strange madness of multiverse today"</span>
+                <span>Rs.320</span>
+            </li> -->
+        </ul>
+    </div>
+
+
+
+        <div id="formContainer">
+            <form>
+                <p>
+                    <label for="category">Category:</label>
+                    <select name="category" id="category">
+                        <option value="Food">Food</option>
+                        <option value="Fuel">Fuel</option>
+                        <option value="Salary">Salary</option>
+                        <option value="Movie">Movie</option>
+                        <option value="Grocery">Grocery</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </p>
+                <p>
+                    <label for="amount">Amount:</label>
+                    <input type="number" name="amount" id="amount" placeholder="Amount">
+                </p>
+                <p>
+                    <label for="description">Description:</label>
+                    <textarea name="description" id="description" rows="1" placeholder="Description"></textarea>
+                </p>
+                <p>
+                    <button class="btn" type="submit">ADD</button>
+                </p>
+                <button type="button" class="closeAddScreen">×</button>
+            </form>
+        </div>
+        <button id="expenseButton" class="btn">+</button>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="js/expense.js"></script>
 </body>
 </html>
