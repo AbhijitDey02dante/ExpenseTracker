@@ -37,4 +37,7 @@ router.post("/update_user_amount",authenticateToken,userController.updateAmount)
 router.get("/getLeaderboard",authenticateToken,userController.getLeaderboard);
 
 
+router.post("/password/forgotpassword",userController.sendMail);
+
+
 module.exports=router;

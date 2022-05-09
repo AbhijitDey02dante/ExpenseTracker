@@ -141,3 +141,40 @@ exports.getLeaderboard = (req,res,next)=>{
     .then(result=>res.json(result))
     .catch(error=>console.log(error))
 }
+
+
+
+var SibApiV3Sdk = require('sib-api-v3-sdk');
+SibApiV3Sdk.ApiClient.instance.authentications['api-key'].apiKey = process.env.MAIL_API_KEY;
+
+exports.sendMail=(req,res,next)=>{
+    console.log(req.body);
+    new SibApiV3Sdk.TransactionalEmailsApi().sendTransacEmail({
+
+        "sender":{ "email":"abhijitdey51234@gmail.com", "name":"Expense Tracker"},
+        "subject":"Password Reset",
+        "htmlContent":"<!DOCTYPE html><html><body><h1>My First Heading</h1><p>My first paragraph.</p></body></html>",
+        "params":{
+           "greeting":"This is the default greeting",
+           "headline":"This is the default headline"
+        },
+      "messageVersions":[
+        //Definition for Message Version 1 
+        {
+            "to":[
+               {
+                  "email":req.body.email,
+                  "name":"Abhijit Dey"
+               }
+            ],
+            "htmlContent":"<!DOCTYPE html><html><body><h1>Really sorry for the inconvenience</h1><p>We will get back to youy soon...</p></body></html>",
+            "subject":"Reset Password"
+         }
+      ]
+   
+   }).then(function(data) {
+     console.log(data);
+   }, function(error) {
+     console.error(error);
+   });
+}
