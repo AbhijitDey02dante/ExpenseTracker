@@ -3,6 +3,8 @@ const jwt=require('jsonwebtoken');
 const Razorpay=require('razorpay');
 const Order = require('../model/order');
 
+const { Op } = require("sequelize");
+
 const User=require('../model/user');
 
 exports.addUser=async (req,res,next)=>{
@@ -110,4 +112,32 @@ exports.getOrder=(req,res,next)=>{
     Order.findAll({where:{userId:req.user.id}})
     .then((output)=>res.json(output))
     .catch(error=>console.log(error));
+}
+
+exports.updateAmount=(req,res,next)=>{
+    User.findAll({where:{id:req.user.id}})
+    .then(result=>{
+        if(result[0].spent)
+        {
+            result[0].spent+= +req.body.amount;
+        }
+        else{
+            result[0].spent=req.body.amount;
+        }
+        result[0].save();
+    })
+    .catch(error=>console.log(error))
+}
+
+exports.getLeaderboard = (req,res,next)=>{
+    User.findAll({
+        where:{
+            spent:{[Op.ne]:null}
+        },
+        order:[
+            ['spent','DESC']
+        ]
+    })
+    .then(result=>res.json(result))
+    .catch(error=>console.log(error))
 }

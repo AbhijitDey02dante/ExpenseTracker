@@ -33,5 +33,8 @@ router.post('/buy_premium',authenticateToken,userController.buyPremium);
 router.post("/payment/verify",userController.paymentVerify);
 router.post("/add_order",authenticateToken,userController.addOrder);
 router.get("/getOrder",authenticateToken,userController.getOrder);
+router.post("/update_user_amount",authenticateToken,userController.updateAmount);
+router.get("/getLeaderboard",authenticateToken,userController.getLeaderboard);
+
 
 module.exports=router;

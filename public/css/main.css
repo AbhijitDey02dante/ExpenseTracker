@@ -63,3 +63,14 @@ a{
 #mode:hover{
     cursor: pointer;
 }
+#leaderboards{
+    padding:20px;
+    text-align: center;
+    display: none;
+}
+
+#leaderboards ul{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}

@@ -102,6 +102,10 @@ addExpenseForm.addEventListener('submit',(e)=>{
         li.appendChild(span3);
 
         expenseList.appendChild(li);
+        
+        axios.post("http://localhost:3000/update_user_amount",{amount:amount.value},configToken)
+        .then()
+        .catch(error=>console.log(error));
     })
     .catch(e=>console.log(e));
 })
