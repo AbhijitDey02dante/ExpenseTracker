@@ -9,3 +9,4 @@ mode.addEventListener('click',()=>{
     else
         localStorage.setItem('mode',0);
 })
+
