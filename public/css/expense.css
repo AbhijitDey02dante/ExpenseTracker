@@ -1,8 +1,16 @@
+h2{
+    margin: 0;
+}
+h1,h2,p{
+    padding-left:20px;
+    padding-top:10px;
+}
+
 .expenseContainer h1{
     margin: 0;
 }
 .expenseContainer{
-    padding: 30px;
+    padding: 0;
 }
 #formContainer{
     background-color: rgb(180, 217, 180);
@@ -85,7 +93,55 @@ select{
 #expenseList li span:nth-child(2){
     width:60%;
 }
+
+table{
+    margin: auto;
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    font-size: 0.8rem;
+}
+table tr:first-child{
+    background-color: rgb(163, 194, 163);
+}
+
+table tr th{
+    padding: 0;
+    border: 2px solid black;
+    /* padding: 10px; */
+}
+
+table tr:nth-child(odd){
+    background-color: rgb(163, 194, 163);
+}
+#sortReport{
+    padding:20px 0 10px 0;
+}
+#sortReport button{
+    background: none;
+    border: none;
+    padding: 5px 10px;
+}
+#sortReport button.active,#sortReport button:hover{
+    background-color: rgb(106, 131, 106);
+    color: white;
+}
+#download{
+    position: fixed;
+    top:140px;
+    right:-20px;
+    transform: scale(0.3);
+}
 @media screen and (min-width:599px) {
+    h2{
+        margin:10px 0;
+    }
+    h1,h2,p{
+        padding:0px;
+    }
+    .expenseContainer{
+        padding: 30px;
+    }
     #expenseButton{
         height:50px;
         width:50px;
@@ -99,5 +155,11 @@ select{
     }
     .closeAddScreen{
         display: none;
+    }
+    table tr th{
+        padding: 10px;
+    }
+    table{
+        font-size: 1rem;
     }
 }

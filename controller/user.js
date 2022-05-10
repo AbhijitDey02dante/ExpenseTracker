@@ -20,7 +20,8 @@ exports.addUser=async (req,res,next)=>{
             name:req.body.name,
             email:req.body.email,
             mobile:req.body.mobile,
-            password:encryptedPassword
+            password:encryptedPassword,
+            premium:0
         })
         .then((result)=>{
             console.log('added');
@@ -113,8 +114,25 @@ exports.addOrder=(req,res,next)=>{
 }
 
 exports.getOrder=(req,res,next)=>{
+    let finalValue;
     Order.findAll({where:{userId:req.user.id}})
-    .then((output)=>res.json(output))
+    .then((output)=>{
+        finalValue=output;
+        if(output.length>0){
+            User.findAll({where:{id:req.user.id}})
+            .then(user=>{
+                console.log('Changed premium');
+                user[0].premium=1;
+                return user[0].save()
+            })
+            .then()
+            .catch(error=>console.log(error))
+        }
+    })
+    .then(()=>{
+        console.log('Finding order');
+        res.json(finalValue);
+    })
     .catch(error=>console.log(error));
 }
 

@@ -28,6 +28,10 @@ const User=sequelize.define('user',{
     },
     spent:{
         type:Sequelize.INTEGER
+    },
+    premium:{
+        type:Sequelize.INTEGER,
+        allowNull:false
     }
 });
 
