@@ -38,6 +38,8 @@ router.get("/getLeaderboard",authenticateToken,userController.getLeaderboard);
 
 
 router.post("/password/forgotpassword",userController.sendMail);
+router.get("/password/resetpassword/:uuid",userController.resetPassword);
+router.post("/password/updatepassword",userController.updatePassword);
 
 
 module.exports=router;

@@ -1,7 +1,11 @@
+const path=require('path');
+
 const bcrypt=require('bcrypt');
 const jwt=require('jsonwebtoken');
 const Razorpay=require('razorpay');
 const Order = require('../model/order');
+const ForgotPasswordRequest = require('../model/forgotPasswordRequest');
+const {v4 : uuidv4} = require('uuid');
 
 const { Op } = require("sequelize");
 
@@ -148,33 +152,100 @@ var SibApiV3Sdk = require('sib-api-v3-sdk');
 SibApiV3Sdk.ApiClient.instance.authentications['api-key'].apiKey = process.env.MAIL_API_KEY;
 
 exports.sendMail=(req,res,next)=>{
-    console.log(req.body);
-    new SibApiV3Sdk.TransactionalEmailsApi().sendTransacEmail({
+    User.findAll({where:{email:req.body.email}})
+    .then((users)=>{
+        let userId;
+        try{
+            userId=users[0].id;
+        }
+        catch(error){
+            res.status(404).json({message:'error'});
+        }
+        if(users.length>0){
+        const newId = uuidv4();
+        new SibApiV3Sdk.TransactionalEmailsApi().sendTransacEmail({
 
-        "sender":{ "email":"abhijitdey51234@gmail.com", "name":"Expense Tracker"},
-        "subject":"Password Reset",
-        "htmlContent":"<!DOCTYPE html><html><body><h1>My First Heading</h1><p>My first paragraph.</p></body></html>",
-        "params":{
-           "greeting":"This is the default greeting",
-           "headline":"This is the default headline"
-        },
-      "messageVersions":[
-        //Definition for Message Version 1 
-        {
-            "to":[
-               {
-                  "email":req.body.email,
-                  "name":"Abhijit Dey"
-               }
-            ],
-            "htmlContent":"<!DOCTYPE html><html><body><h1>Really sorry for the inconvenience</h1><p>We will get back to youy soon...</p></body></html>",
-            "subject":"Reset Password"
-         }
-      ]
-   
-   }).then(function(data) {
-     console.log(data);
-   }, function(error) {
-     console.error(error);
-   });
+            "sender":{ "email":"abhijitdey51234@gmail.com", "name":"Expense Tracker"},
+            "subject":"Password Reset",
+            "htmlContent":"<!DOCTYPE html><html><body><h1>My First Heading</h1><p>My first paragraph.</p></body></html>",
+            "params":{
+            "greeting":"This is the default greeting",
+            "headline":"This is the default headline"
+            },
+        "messageVersions":[
+            //Definition for Message Version 1 
+            {
+                "to":[
+                {
+                    "email":req.body.email,
+                    "name":"Abhijit Dey"
+                }
+                ],
+                "htmlContent":`<!DOCTYPE html><html><body><h1>Click on the below link to reset your Expense Tracker password</h1><p>http://localhost:3000/password/resetpassword/${newId}</p></body></html>`,
+                "subject":"Reset Password"
+            }
+        ]
+
+        }).then(function(data) {
+        console.log(data);
+        ForgotPasswordRequest.create({
+            uuid:newId,
+            isactive:true,
+            userId:userId
+        })
+        .then(()=>res.json({success:true}))
+        .catch(error=>console.log(error));
+
+
+            }, function(error) {
+            console.error(error);
+            });
+        }
+    })
+    .catch(error=>console.log(error));
+}
+
+
+exports.resetPassword=(req,res,next)=>{
+    const uuid=req.params.uuid;
+    console.log(req.params.uuid);
+    ForgotPasswordRequest.findAll({where:{uuid:uuid,isactive:1}})
+    .then((user)=>{
+        if(user.length>0)
+            res.sendFile('resetPassword.html', { root: path.join(__dirname, '../public') });
+        else
+            res.send('<h1>password link expired</h1>')
+    })
+    .catch(error=>console.log(error))
+}
+
+exports.updatePassword=async (req,res,next)=>{
+    const uuid=req.body.uuid;
+    const password=req.body.password;
+    try{
+        const salt=await bcrypt.genSalt(10);
+        const encryptedPassword=await bcrypt.hash(password,salt);
+        console.log(uuid,password);
+        ForgotPasswordRequest.findAll({where:{uuid:uuid}})
+        .then(element=>{
+            User.findAll({where:{id:element[0].userId}})
+            .then(user=>{
+                user[0].password=encryptedPassword;
+                return user[0].save()
+            })
+            .then(()=>{
+                element[0].isactive=0;
+                return element[0].save()
+            })
+            .then(()=>{
+                console.log('updated');
+                res.send('<h2>Password updated, please go to main page to login!</h2>');
+            })
+            .catch(error=>console.log(error));
+        })
+        .catch(error=>console.log(error));
+    }
+    catch(error){
+        console.log(error);
+    }
 }

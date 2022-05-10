@@ -19,5 +19,15 @@ form.addEventListener('submit',(e)=>{
         localStorage.setItem('token',res.data);
         window.location='expense.html';
     })
-    .catch(error=>console.log(error));
+    .catch(error=>{
+        const message=document.querySelector('#submitMessage');
+
+        const span=document.createElement('span');
+        span.innerText='Incorrect Username or Password';
+        // span.classList.toggle('active');
+        message.appendChild(span);
+
+        console.log(error);
+        setTimeout(()=>span.remove(),3000);
+    });
 })
