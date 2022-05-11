@@ -96,7 +96,7 @@ select{
 
 table{
     margin: auto;
-    width: 100%;
+    width: 99%;
     border-collapse: collapse;
     border-spacing: 0;
     font-size: 0.8rem;
@@ -114,8 +114,13 @@ table tr th{
 table tr:nth-child(odd){
     background-color: rgb(163, 194, 163);
 }
+table tr td{
+    padding-left: 5px;
+}
+
 #sortReport{
     padding:20px 0 10px 0;
+    position: relative;
 }
 #sortReport button{
     background: none;
@@ -127,9 +132,9 @@ table tr:nth-child(odd){
     color: white;
 }
 #download{
-    position: fixed;
-    top:140px;
-    right:-20px;
+    position: absolute;
+    top:-20px;
+    right:-30px;
     transform: scale(0.3);
 }
 @media screen and (min-width:599px) {
@@ -146,15 +151,8 @@ table tr:nth-child(odd){
         height:50px;
         width:50px;
     }
-    
-    /* #formContainer{
-        transform: translateX(0);
-    } */
     #formContainer form{  
         flex-direction: row;
-    }
-    .closeAddScreen{
-        display: none;
     }
     table tr th{
         padding: 10px;

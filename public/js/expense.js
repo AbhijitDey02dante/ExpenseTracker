@@ -1,3 +1,5 @@
+const url = "http://localhost:3000";
+
 const expenseButton=document.querySelector('#expenseButton');
 const closeAddScreen=document.querySelector('.closeAddScreen');
 const form=document.querySelector('#formContainer');
@@ -20,13 +22,14 @@ configToken = {
        Authorization: "Bearer " + token
     }
  }
-axios.get("http://localhost:3000/authenticate",configToken)
+axios.get(`${url}/authenticate`,configToken)
 .then(result=>{
     welcomeMessage.innerText="Welcome, "+result.data[0].name+"!!!";
-    axios.get('http://localhost:3000/getOrder',configToken)
+    axios.get(`${url}/getOrder`,configToken)
     .then((result)=>{
         if(result.data.length>0){
             mode.style.display='inline';
+            document.querySelector('#records').style.display='inline';
 
             const sortReport= document.querySelector('#sortReport');
             const button1=document.createElement('button');
@@ -43,18 +46,31 @@ axios.get("http://localhost:3000/authenticate",configToken)
             button4.innerText='Yearly';
             sortReport.appendChild(button4);
 
-            const download=document.querySelector('#download');
-            const downBtn=document.createElement('button');
-            // downBtn.classList.add('btn');
-            downBtn.innerHTML='<img src="image/icons8.gif">';
-            download.appendChild(downBtn);
-
-
+            //Display mode
            if(localStorage.getItem('mode')!=0)
            {
                console.log('dark');
                document.body.classList.toggle('active');
            }
+
+           const download=document.querySelector('#download');
+           const downBtn=document.createElement('button');
+           // downBtn.classList.add('btn');
+           downBtn.innerHTML='<img src="image/icons8.gif">';
+           download.appendChild(downBtn);
+           
+           //Download button.............................................
+           const downloadButton=document.querySelector('#download button');
+
+           downloadButton.addEventListener('click',()=>{
+               axios.get(`${url}/download`,configToken)
+               .then((result)=>{
+                   window.open(result.data.response.Location,"_blank");
+                   return axios.post(`${url}/download_record`,result.data.response,configToken)
+               })
+               .then(()=>console.log("downloaded file"))
+               .catch(error=>{console.log(error)});
+           })
         }
     })
     .catch(()=>console.log("not a premium member"));
@@ -65,7 +81,7 @@ axios.get("http://localhost:3000/authenticate",configToken)
 // ************************************************************
 
 //display after loading the DOM
-axios.get("http://localhost:3000/get_expense",configToken)
+axios.get(`${url}/get_expense`,configToken)
 .then((result)=>{
     result.data.forEach(element => {
 
@@ -74,6 +90,10 @@ axios.get("http://localhost:3000/get_expense",configToken)
 
         const td1=document.createElement('td');
         td1.innerText=element.createdAt.substring(0,element.createdAt.lastIndexOf('T'));
+        const delButton=document.createElement('button');
+        delButton.innerHTML=`<i class="bi bi-trash-fill"></i>`;
+        delButton.classList.add('delete');
+        td1.append(delButton);
         tr.appendChild(td1);
 
         const td2=document.createElement('td');
@@ -113,32 +133,18 @@ addExpenseForm.addEventListener('submit',(e)=>{
         amount:amount.value,
         description:description.value
     }
-    axios.post('http://localhost:3000/add_expense',obj,configToken)
+    axios.post(`${url}/add_expense`,obj,configToken)
     .then((result)=>{       
-        // const li=document.createElement('li');
-        // li.id='expense'+result.data.id;
-
-        // const span1=document.createElement('span');
-        // span1.innerText=category.value;
-        // li.appendChild(span1);
-
-        // const span2=document.createElement('span');
-        // span2.innerText='"'+description.value+'"';
-        // li.appendChild(span2);
-
-        // const span3=document.createElement('span');
-        // span3.innerText="Rs. "+amount.value;
-        // li.appendChild(span3);
-
-        // expenseList.appendChild(li);
-
-        
         const tr=document.createElement('tr');
         tr.id='expense'+result.data.id;
 
         const td1=document.createElement('td');
         const today=new Date();
         td1.innerText=today.getFullYear()+"-"+today.getMonth()+"-"+today.getDate();
+        const delButton=document.createElement('button');
+        delButton.innerHTML=`<i class="bi bi-trash-fill"></i>`;
+        delButton.classList.add('delete');
+        td1.append(delButton);
         tr.appendChild(td1);
 
         const td2=document.createElement('td');
@@ -155,9 +161,25 @@ addExpenseForm.addEventListener('submit',(e)=>{
 
         table.appendChild(tr);
         
-        axios.post("http://localhost:3000/update_user_amount",{amount:amount.value},configToken)
+        axios.post(`${url}/update_user_amount`,{amount:amount.value},configToken)
         .then()
         .catch(error=>console.log(error));
     })
     .catch(e=>console.log(e));
+})
+
+// delete
+table.addEventListener('click',(e)=>{
+    console.log(e.target.tagName);
+    if(e.target.tagName=='I')
+    {
+        const id=e.target.parentElement.parentElement.parentElement.id;
+        const expenseId=id.replace('expense','');
+        axios.post(`${url}/delete_expense`,{id:expenseId},configToken)
+        .then(result=>{
+            const destroyElement=document.getElementById(id);
+            destroyElement.remove();
+        })
+        .catch(error=>console.log(error))
+    }
 })

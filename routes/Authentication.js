@@ -27,6 +27,7 @@ router.post('/login',userController.getUser);
 router.get('/authenticate',authenticateToken,userController.checkUser);
 router.post('/add_expense',authenticateToken,expenseController.postExpense);
 router.get('/get_expense',authenticateToken,expenseController.getExpense);
+router.post('/delete_expense',authenticateToken,expenseController.deleteExpense);
 
 
 router.post('/buy_premium',authenticateToken,userController.buyPremium);
@@ -40,6 +41,10 @@ router.get("/getLeaderboard",authenticateToken,userController.getLeaderboard);
 router.post("/password/forgotpassword",userController.sendMail);
 router.get("/password/resetpassword/:uuid",userController.resetPassword);
 router.post("/password/updatepassword",userController.updatePassword);
+
+router.get('/download',authenticateToken,expenseController.download);
+router.post('/download_record',authenticateToken,expenseController.updateRecord);
+router.get('/get_record',authenticateToken,expenseController.getRecord);
 
 
 module.exports=router;

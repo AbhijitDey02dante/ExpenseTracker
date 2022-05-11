@@ -11,6 +11,7 @@ const User=require('./model/user');
 const Expense=require('./model/expense');
 const Order=require('./model/order');
 const ForgotPasswordRequest=require('./model/forgotPasswordRequest');
+const Records=require('./model/downloadRecord');
 
 
 User.hasMany(Expense);
@@ -22,6 +23,10 @@ Order.belongsTo(User);
 
 User.hasMany(ForgotPasswordRequest);
 ForgotPasswordRequest.belongsTo(User);
+
+User.hasMany(Records);
+Records.belongsTo(User);
+
 
 const sequelize=require('./util/database');
 const AuthenticationRouter = require('./routes/Authentication');

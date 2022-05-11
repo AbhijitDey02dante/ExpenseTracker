@@ -5,27 +5,32 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expense Tracker</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/expense.css">
 </head>
 <body>
     <nav id="topNav">
         <ul>
-            <li><a class="active" href="expense.html">Expense Tracker</a></li>
+            <li><a class="active" href="expense.html">Expense</a></li>
             <li><a href="buyPremium.html">Premium</a></li>
             <li><span id="mode">O</span></li>
+            <li><a  id="records" href="Records.html">Records</a></li>
             <li><a href="login.html">Logout</a></li>
         </ul>
     </nav>
     <div class="expenseContainer">
         <h1>Expense Tracker</h1>
         <h2></h2>
-        <p>Here is a report of your daily expense</p>
+        <p>Here is a report of your expense</p>
         <div id="sortReport">
             <!-- <button>Default</button>
             <button>Daily(within 24hrs)</button>
             <button>Monthly</button>
             <button>Yearly</button> -->
+            <div id="download">
+                <!-- <button class="btn">Download</button> -->
+            </div>
         </div>
         <table id="expenseTable">
             <tr>
@@ -75,9 +80,6 @@
             </form>
         </div>
         <button id="expenseButton" class="btn">+</button>
-        <div id="download">
-            <!-- <button class="btn">Download</button> -->
-        </div>
 
 
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

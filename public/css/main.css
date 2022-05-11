@@ -35,18 +35,17 @@ body.active{
 #topNav ul{
     list-style-type: none;
     padding: 0;
-    margin: 0;
+    margin:0;
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
 }
 #topNav ul li{
-    width:25%;
-    padding:10px;
+    /* width:25%; */
+    display: flex;
+    margin: auto;
+    padding:10px 2px;
     text-align: center;
-}
-
-#topNav ul li:last-child{
-    text-align: end;
 }
 a{
     text-decoration: none;
@@ -57,7 +56,7 @@ a{
     padding:20px;
 }
 #mode{
-    padding:20px;
+    /* padding:20px; */
     display: none;
 }
 #mode:hover{
@@ -73,4 +72,14 @@ a{
     list-style-type: none;
     padding: 0;
     margin: 0;
+}
+.delete{
+    background:none;
+    border: none;
+}
+.delete:hover{
+    color: red;
+}
+#records{
+    display: none;
 }

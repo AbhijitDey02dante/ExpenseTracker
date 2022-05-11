@@ -22,6 +22,7 @@ configToken = {
             const leaderboardContainer=document.querySelector('#leaderboards');
             leaderboardContainer.style.display='block';
             mode.style.display='inline';
+            document.querySelector('#records').style.display='inline';
             if(localStorage.getItem('mode')!=0)
             {
                 document.body.classList.toggle('active');

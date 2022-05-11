@@ -1,0 +1,21 @@
+.tableOfRecord div{
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-flow: row wrap;
+    padding:2px 0;
+}
+.tableOfRecord div span{  
+    word-wrap: break-word;
+    width:33vw;  
+}
+.tableOfRecord div:nth-child(odd){
+    background-color:rgb(176, 210, 176) ;
+}
+.tableOfRecord div:first-child{
+    font-weight: 700;
+}
