@@ -17,13 +17,13 @@ exports.postExpense = (req,res,next)=>{
 }
 
 
-let ITEMS_PER_PAGE=10;
 
 exports.getExpense=(req,res,next)=>{
+    let ITEMS_PER_PAGE= +req.query.pageItem || 10;
     const page = +req.query.page || 1;
     let totalItems;
 
-    Expense.count()
+    Expense.count({where:{userId:req.user.id}})
     .then(numProducts=>{
         totalItems=numProducts;
         return Expense.findAll({where:{userId:req.user.id},limit:ITEMS_PER_PAGE , offset:(page-1)*ITEMS_PER_PAGE})

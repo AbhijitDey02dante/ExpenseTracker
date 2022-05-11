@@ -14,6 +14,8 @@ const welcomeMessage=document.querySelector('.expenseContainer h2');
 const expenseList=document.querySelector('#expenseList');
 const table=document.querySelector('#expenseTable');
 
+const rowPerPage = document.querySelector('#rowPerPage');
+
 
 // Authenticate if logged in 
 const token=localStorage.getItem('token');
@@ -32,19 +34,19 @@ axios.get(`${url}/authenticate`,configToken)
             document.querySelector('#records').style.display='inline';
 
             const sortReport= document.querySelector('#sortReport');
-            const button1=document.createElement('button');
-            button1.innerText='Default';
-            button1.classList.add('active');
-            sortReport.appendChild(button1);
-            const button2=document.createElement('button');
-            button2.innerText='Daily(Within 24hrs)';
-            sortReport.appendChild(button2);
-            const button3=document.createElement('button');
-            button3.innerText='Monthly';
-            sortReport.appendChild(button3);
-            const button4=document.createElement('button');
-            button4.innerText='Yearly';
-            sortReport.appendChild(button4);
+            // const button1=document.createElement('button');
+            // button1.innerText='Default';
+            // button1.classList.add('active');
+            // sortReport.appendChild(button1);
+            // const button2=document.createElement('button');
+            // button2.innerText='Daily(Within 24hrs)';
+            // sortReport.appendChild(button2);
+            // const button3=document.createElement('button');
+            // button3.innerText='Monthly';
+            // sortReport.appendChild(button3);
+            // const button4=document.createElement('button');
+            // button4.innerText='Yearly';
+            // sortReport.appendChild(button4);
 
             //Display mode
            if(localStorage.getItem('mode')!=0)
@@ -81,12 +83,23 @@ axios.get(`${url}/authenticate`,configToken)
 // ************************************************************
 
 //display after loading the DOM
-let page=1;
-const pageNumber=document.querySelector('#pageNumber');
+if(!(localStorage.getItem('pageItem'))){
+    localStorage.setItem('pageItem',10);
+}
+else{
+    rowPerPage.value=(localStorage.getItem('pageItem'));
+}
 
-axios.get(`${url}/get_expense?page=1`,configToken)
+let page=1;
+let currentPage=1;
+const pageNumber=document.querySelector('#pageNumber');
+//add more page number dynamically so remove old
+const pageButton=document.querySelectorAll('#pageNumber span');
+pageButton.forEach(btn=>btn.remove());
+
+axios.get(`${url}/get_expense?pageItem=${localStorage.getItem('pageItem')}&page=1`,configToken)
 .then((result)=>{
-        let totalPages=Math.ceil(result.data[0].total / 10);
+        let totalPages=Math.ceil(result.data[0].total / localStorage.getItem('pageItem'));
         for(let i=0;i<totalPages;i++){
             const span=document.createElement('span');
             span.id=`page${page}`
@@ -159,9 +172,9 @@ addExpenseForm.addEventListener('submit',(e)=>{
             const pageButton=document.querySelectorAll('#pageNumber span');
             pageButton.forEach(btn=>btn.remove());
 
-            axios.get(`${url}/get_expense?page=1`,configToken)
+            axios.get(`${url}/get_expense?pageItem=${localStorage.getItem('pageItem')}&page=1`,configToken)
             .then((result)=>{
-                    let totalPages=Math.ceil(result.data[0].total / 10);
+                    let totalPages=Math.ceil(result.data[0].total / localStorage.getItem('pageItem'));
                     page=1;
                     for(let i=0;i<totalPages;i++){
                         const span=document.createElement('span');
@@ -171,7 +184,8 @@ addExpenseForm.addEventListener('submit',(e)=>{
             
                         pageNumber.appendChild(span);
                     }
-                    return axios.get(`${url}/get_expense?page=${totalPages}`,configToken)
+                    currentPage=totalPages;
+                    return axios.get(`${url}/get_expense?pageItem=${localStorage.getItem('pageItem')}&page=${totalPages}`,configToken)
             })
             .then(result=>{
                 // remove old data
@@ -249,7 +263,6 @@ addExpenseForm.addEventListener('submit',(e)=>{
 
 // delete
 table.addEventListener('click',(e)=>{
-    console.log(e.target.tagName);
     if(e.target.tagName=='I')
     {
         const id=e.target.parentElement.parentElement.parentElement.id;
@@ -265,9 +278,9 @@ table.addEventListener('click',(e)=>{
             expenseRow.forEach(element=>element.remove());
 
 
-            axios.get(`${url}/get_expense?page=1`,configToken)
+            axios.get(`${url}/get_expense?pageItem=${localStorage.getItem('pageItem')}&page=${currentPage}`,configToken)
             .then((result)=>{
-                    let totalPages=Math.ceil(result.data[0].total / 10);
+                    let totalPages=Math.ceil(result.data[0].total / localStorage.getItem('pageItem'));
                     page=1;
                     for(let i=0;i<totalPages;i++){
                         const span=document.createElement('span');
@@ -322,7 +335,8 @@ table.addEventListener('click',(e)=>{
 pageNumber.addEventListener('click',(e)=>{
     if(e.target.tagName=='SPAN'){
         const pageNo = e.target.id.replace('page','');
-        axios.get(`${url}/get_expense?page=${pageNo}`,configToken)
+        currentPage=pageNo;
+        axios.get(`${url}/get_expense?pageItem=${localStorage.getItem('pageItem')}&page=${pageNo}`,configToken)
         .then((result)=>{
             // remove old data
             const expenseRow=document.querySelectorAll('.expenses');
@@ -361,4 +375,59 @@ pageNumber.addEventListener('click',(e)=>{
         })
         .catch(error=>console.log(error));
     }
+})
+
+//set Items per page
+rowPerPage.addEventListener('change',()=>{
+    localStorage.setItem('pageItem',rowPerPage.value);
+    //add more page number dynamically so remove old
+    const pageButton=document.querySelectorAll('#pageNumber span');
+    pageButton.forEach(btn=>btn.remove());
+    // remove old data
+    const expenseRow=document.querySelectorAll('.expenses');
+    expenseRow.forEach(element=>element.remove());
+
+
+    axios.get(`${url}/get_expense?pageItem=${localStorage.getItem('pageItem')}&page=1`,configToken)
+    .then((result)=>{
+            let totalPages=Math.ceil(result.data[0].total / localStorage.getItem('pageItem'));
+            page=1;
+            for(let i=0;i<totalPages;i++){
+                const span=document.createElement('span');
+                span.id=`page${page}`
+                span.innerText=page;
+                page++;
+
+                pageNumber.appendChild(span);
+            }
+            result.data[1].forEach(element=>{
+                const tr=document.createElement('tr');
+                tr.id='expense'+element.id;
+                tr.classList.add('expenses');
+
+
+                const td1=document.createElement('td');
+                td1.innerText=element.createdAt.substring(0,element.createdAt.lastIndexOf('T'));
+                const delButton=document.createElement('button');
+                delButton.innerHTML=`<i class="bi bi-trash-fill"></i>`;
+                delButton.classList.add('delete');
+                td1.append(delButton);
+                tr.appendChild(td1);
+        
+                const td2=document.createElement('td');
+                td2.innerText=element.category;
+                tr.appendChild(td2);
+        
+                const td3=document.createElement('td');
+                td3.innerText='"'+element.description+'"';
+                tr.appendChild(td3);
+        
+                const td4=document.createElement('td');
+                td4.innerText="Rs. "+element.amount;
+                tr.appendChild(td4);
+        
+                table.appendChild(tr);
+            })
+    })
+    .catch(error=>console.log(error))
 })
