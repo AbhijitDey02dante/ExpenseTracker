@@ -60,9 +60,8 @@ document.addEventListener('DOMContentLoaded',()=>{
 
             const span3=document.createElement('span');
             const a=document.createElement('a');
-            a.innerText='Download';
+            a.innerHTML='<i class="bi bi-file-earmark-arrow-down-fill"></i>';
             a.href=record.url;
-            a.classList.add('btn');
             span3.appendChild(a);
             div.appendChild(span3);
 

@@ -16,9 +16,22 @@ exports.postExpense = (req,res,next)=>{
     .catch(error=>res.json({success:false}))
 }
 
+
+let ITEMS_PER_PAGE=10;
+
 exports.getExpense=(req,res,next)=>{
-    Expense.findAll({where:{userId:req.user.id}})
-    .then(result=>res.json(result))
+    const page = +req.query.page || 1;
+    let totalItems;
+
+    Expense.count()
+    .then(numProducts=>{
+        totalItems=numProducts;
+        return Expense.findAll({where:{userId:req.user.id},limit:ITEMS_PER_PAGE , offset:(page-1)*ITEMS_PER_PAGE})
+    })
+    .then(result=>{
+        const detailedExpense = [{total: totalItems},[...result]];
+        res.status(200).json(detailedExpense);
+    })
     .catch(error=>console.log(error))
 }
 

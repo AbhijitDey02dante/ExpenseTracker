@@ -74,6 +74,7 @@ buyButton.addEventListener('click',(e)=>{
                         const leaderboardContainer=document.querySelector('#leaderboards');
                         leaderboardContainer.style.display='block';
                         mode.style.display='inline';
+                        document.querySelector('#records').style.display='inline';
                         localStorage.setItem('mode',0);
                         axios.get('http://localhost:3000/getLeaderboard',configToken)
                         .then(result=>{

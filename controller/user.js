@@ -147,8 +147,12 @@ exports.updateAmount=(req,res,next)=>{
             result[0].spent=req.body.amount;
         }
         result[0].save();
+        res.status(200).json({sucess:true});
     })
-    .catch(error=>console.log(error))
+    .catch(error=>{
+        console.log(error);
+        res.status(500).json({sucess:false});
+    })
 }
 
 exports.getLeaderboard = (req,res,next)=>{
