@@ -51,7 +51,7 @@ app.use(helmet());
 app.use(bodyParser.json());
 app.use(AuthenticationRouter);
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/login.html");
+    res.redirect('http://18.237.245.17:3000/login.html');
 });
 
 
