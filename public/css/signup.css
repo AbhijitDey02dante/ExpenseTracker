@@ -58,6 +58,9 @@ input::-webkit-inner-spin-button {
     color:red;
 }
 #submitMessage span.active{
+    background-color: white;
+    padding:5px 10px;
+    border-radius: 20px;
     color:green;
 }
 
