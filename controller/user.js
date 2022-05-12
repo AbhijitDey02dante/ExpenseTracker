@@ -236,7 +236,8 @@ exports.resetPassword=(req,res,next)=>{
     ForgotPasswordRequest.findAll({where:{uuid:uuid,isactive:1}})
     .then((user)=>{
         if(user.length>0)
-            res.sendFile('resetPassword.html', { root: path.join(__dirname, '../public') });
+            // res.sendFile('resetPassword.html', { root: path.join(__dirname, '../public') });
+            res.redirect(`http://18.237.245.17:3000/resetPassword.html?id=${uuid}`);
         else
             res.send('<h1>password link expired</h1>')
     })
