@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 
-module.exports=new Sequelize('expense_tracker','root','Optimusprime',{
+module.exports=new Sequelize(process.env.DATABASE_SCHEMA,process.env.DATABASE_USERNAME,process.env.DATABASE_PASSWORD,{
     dialect:"mysql",
-    host:'localhost'
+    host:process.env.DATABASE_HOST
 })

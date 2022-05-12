@@ -1,9 +1,13 @@
 const path=require('path');
+const fs=require('fs');
 
 const express=require('express');
 const cors=require('cors');
 const bodyParser=require('body-parser');
 const dotenv=require('dotenv');
+const helmet=require('helmet');
+const morgan=require('morgan');
+// const compression=require('compression');
 
 dotenv.config();
 
@@ -34,7 +38,12 @@ const AuthenticationRouter = require('./routes/Authentication');
 const app=express();
 app.use(express.static(path.join(__dirname, 'public')));
 
+const accessLogStream=fs.createWriteStream(path.join(__dirname, 'access.log'),{flags:'a'});
+
 app.use(cors());
+app.use(helmet());
+app.use(morgan('combined',{stream:accessLogStream}));
+// app.use(compression());
 app.use(bodyParser.json());
 app.use(AuthenticationRouter);
 

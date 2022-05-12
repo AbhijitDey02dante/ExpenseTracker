@@ -10,6 +10,9 @@ body{
     font-family: sans-serif;
     background-color: rgb(240, 255, 240);
 }
+.mainHeader{
+    font-family: 'Oleo Script Swash Caps', cursive;
+}
 body.active{
     color: white;
     background-color: rgb(58, 71, 58);
