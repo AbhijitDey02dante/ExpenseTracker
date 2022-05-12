@@ -277,6 +277,8 @@ table.addEventListener('click',(e)=>{
             // const expenseRow=document.querySelectorAll('.expenses');
             // expenseRow.forEach(element=>element.remove());
 
+            const expense=document.getElementById('id');
+            expense.remove();
 
             axios.get(`${url}/get_expense?pageItem=${localStorage.getItem('pageItem')}&page=${currentPage}`,configToken)
             .then((result)=>{
@@ -290,34 +292,34 @@ table.addEventListener('click',(e)=>{
 
                         pageNumber.appendChild(span);
                     }
-                    result.data[1].forEach(element=>{
-                        const tr=document.createElement('tr');
-                        tr.id='expense'+element.id;
-                        tr.classList.add('expenses');
+            //         result.data[1].forEach(element=>{
+            //             const tr=document.createElement('tr');
+            //             tr.id='expense'+element.id;
+            //             tr.classList.add('expenses');
 
 
-                        const td1=document.createElement('td');
-                        td1.innerText=element.createdAt.substring(0,element.createdAt.lastIndexOf('T'));
-                        const delButton=document.createElement('button');
-                        delButton.innerHTML=`<i class="bi bi-trash-fill"></i>`;
-                        delButton.classList.add('delete');
-                        td1.append(delButton);
-                        tr.appendChild(td1);
+            //             const td1=document.createElement('td');
+            //             td1.innerText=element.createdAt.substring(0,element.createdAt.lastIndexOf('T'));
+            //             const delButton=document.createElement('button');
+            //             delButton.innerHTML=`<i class="bi bi-trash-fill"></i>`;
+            //             delButton.classList.add('delete');
+            //             td1.append(delButton);
+            //             tr.appendChild(td1);
                 
-                        const td2=document.createElement('td');
-                        td2.innerText=element.category;
-                        tr.appendChild(td2);
+            //             const td2=document.createElement('td');
+            //             td2.innerText=element.category;
+            //             tr.appendChild(td2);
                 
-                        const td3=document.createElement('td');
-                        td3.innerText='"'+element.description+'"';
-                        tr.appendChild(td3);
+            //             const td3=document.createElement('td');
+            //             td3.innerText='"'+element.description+'"';
+            //             tr.appendChild(td3);
                 
-                        const td4=document.createElement('td');
-                        td4.innerText="Rs. "+element.amount;
-                        tr.appendChild(td4);
+            //             const td4=document.createElement('td');
+            //             td4.innerText="Rs. "+element.amount;
+            //             tr.appendChild(td4);
                 
-                        table.appendChild(tr);
-                    })
+            //             table.appendChild(tr);
+            //         })
             })
             // TEST END*****************************************
         })
