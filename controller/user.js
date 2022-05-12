@@ -2,7 +2,7 @@ const url='http://18.237.245.17:3000';
 
 const path=require('path');
 
-const bcrypt=require('bcrypt');
+const bcrypt=require('bcryptjs');
 const jwt=require('jsonwebtoken');
 const Razorpay=require('razorpay');
 const Order = require('../model/order');
