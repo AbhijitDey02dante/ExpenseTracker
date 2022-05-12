@@ -64,6 +64,7 @@ input::-webkit-inner-spin-button {
     color:green;
 }
 
+
 @media screen and (min-width:599px) {
     input:focus{
         border: none;
