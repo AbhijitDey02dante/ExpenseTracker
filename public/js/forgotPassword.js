@@ -9,7 +9,7 @@ form.addEventListener('submit',(e)=>{
     const span =document.querySelector('#submitMessage span');
     axios.post(`${url}/password/forgotpassword`,{email:email.value})
     .then(res=>{
-        span.innerText='Link to reset your password has been sent to your mail';
+        span.innerText='Sent link to reset password';
         span.classList.add('active');
         setTimeout(()=>{
             span.innerText='';
@@ -18,7 +18,7 @@ form.addEventListener('submit',(e)=>{
 
     })
     .catch(error=>{
-        span.innerText='There was some error sending the request please try again later';
+        span.innerText='Error incorrect mail ID';
         span.classList.add('errorMessage');
         setTimeout(()=>{
             span.innerText='';

@@ -53,13 +53,13 @@ input::-webkit-inner-spin-button {
 }
 #submitMessage span.errorMessage{
     background-color: white;
-    padding:5px 10px;
+    padding:0px 10px;
     border-radius: 20px;
     color:red;
 }
 #submitMessage span.active{
     background-color: white;
-    padding:5px 10px;
+    padding:0px 10px;
     border-radius: 20px;
     color:green;
 }

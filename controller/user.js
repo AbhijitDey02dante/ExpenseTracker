@@ -1,3 +1,5 @@
+const url='http://18.237.245.17:3000';
+
 const path=require('path');
 
 const bcrypt=require('bcrypt');
@@ -203,7 +205,7 @@ exports.sendMail=(req,res,next)=>{
                     "name":"Abhijit Dey"
                 }
                 ],
-                "htmlContent":`<!DOCTYPE html><html><body><h1>Click on the below link to reset your Expense Tracker password</h1><p>http://localhost:3000/password/resetpassword/${newId}</p></body></html>`,
+                "htmlContent":`<!DOCTYPE html><html><body><h1>Click on the below link to reset your Expense Tracker password</h1><p>${url}/password/resetpassword/${newId}</p></body></html>`,
                 "subject":"Reset Password"
             }
         ]
