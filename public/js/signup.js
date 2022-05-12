@@ -33,7 +33,7 @@ form.addEventListener('submit',(e)=>{
             setTimeout(()=>{
                 span.classList.remove('active');
                 span.innerText='';
-                window.location='login.html';
+                window.location.href=`${url}/login.html`;
             },3000);
         }
         else{

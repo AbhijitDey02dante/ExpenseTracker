@@ -13,11 +13,12 @@ form.addEventListener('submit',(e)=>{
         const heading=document.querySelector('#heading');
         heading.innerText='Password updated successfully';
         const message=document.querySelector('#submitMessage');
-        message.innerText='Go to the main website to login';
+        message.innerText='Redirecting to login page';
 
         const destroyForm=document.querySelectorAll('.formDetail');
         destroyForm.forEach(element=>{
             element.remove();
+            window.location.href=`${url}/login.html`;
         })
     })
     .catch(error=>console.log(error));
