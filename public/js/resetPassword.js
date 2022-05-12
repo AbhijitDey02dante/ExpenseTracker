@@ -19,7 +19,6 @@ form.addEventListener('submit',(e)=>{
             element.remove();
         })
 
-
     })
     .catch(error=>console.log(error));
 })
