@@ -50,6 +50,9 @@ app.use(helmet());
 // app.use(compression());
 app.use(bodyParser.json());
 app.use(AuthenticationRouter);
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/login.html");
+});
 
 
 
