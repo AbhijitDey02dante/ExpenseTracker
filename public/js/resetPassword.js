@@ -5,7 +5,7 @@ const password=document.querySelector('#password');
 
 form.addEventListener('submit',(e)=>{
     e.preventDefault();
-    const uuid=window.location.href.substring(window.location.href.lastIndexOf('/')+1);
+    const uuid=window.location.href.substring(window.location.href.lastIndexOf('=')+1);
     axios.post(`${url}/password/updatepassword`,{uuid:uuid,password:password.value})
     .then(()=>{
         password.value='';
