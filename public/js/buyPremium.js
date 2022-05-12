@@ -1,3 +1,5 @@
+const url = "http://18.237.245.17:3000";
+
 const buyButton=document.querySelector('#payButton');
 const header2=document.querySelector('.container h2');
 const header3=document.querySelector('.container p');
@@ -10,9 +12,9 @@ configToken = {
        Authorization: "Bearer " + token
     }
  }
- axios.get("http://localhost:3000/authenticate",configToken)
+ axios.get(`${url}/authenticate`,configToken)
  .then((output)=>{
-    axios.get('http://localhost:3000/getOrder',configToken)
+    axios.get(`${url}/getOrder`,configToken)
     .then(result=>{
         if(result.data.length>0)
         {  
@@ -27,7 +29,7 @@ configToken = {
             {
                 document.body.classList.toggle('active');
             }
-            axios.get('http://localhost:3000/getLeaderboard',configToken)
+            axios.get(`${url}/getLeaderboard`,configToken)
             .then(result=>{
                    result.data.forEach(element=>{
                        const p=document.createElement('p');
@@ -49,7 +51,7 @@ configToken = {
 //  ****************************************************************
 let amount=1;
 buyButton.addEventListener('click',(e)=>{
-    axios.post("http://localhost:3000/buy_premium",{amount:amount*100},configToken)
+    axios.post(`${url}/buy_premium`,{amount:amount*100},configToken)
     .then(res=>{
         let options = {
             "key": "rzp_test_UPoGzuJVY1Mszz", // Enter the Key ID generated from the Dashboard
@@ -62,11 +64,11 @@ buyButton.addEventListener('click',(e)=>{
                 // alert(response.razorpay_payment_id);
                 // alert(response.razorpay_order_id);
                 // alert(response.razorpay_signature)
-                axios.post("http://localhost:3000/payment/verify",{response})
+                axios.post(`${url}/payment/verify`,{response})
                 .then(result=>{
                     console.log("entered");
                     //adding Order id
-                    axios.post("http://localhost:3000/add_order",{orderid:response.razorpay_order_id},configToken)
+                    axios.post(`${url}/add_order`,{orderid:response.razorpay_order_id},configToken)
                     .then(()=>{
                         buyButton.remove();
                         header2.innerText='Premium Member';
@@ -76,7 +78,7 @@ buyButton.addEventListener('click',(e)=>{
                         mode.style.display='inline';
                         document.querySelector('#records').style.display='inline';
                         localStorage.setItem('mode',0);
-                        axios.get('http://localhost:3000/getLeaderboard',configToken)
+                        axios.get(`${url}/getLeaderboard`,configToken)
                         .then(result=>{
                                result.data.forEach(element=>{
                                    const p=document.createElement('p');

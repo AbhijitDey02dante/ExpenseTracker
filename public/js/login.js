@@ -1,3 +1,5 @@
+const url = "http://18.237.245.17:3000";
+
 const email=document.querySelector('#email');
 const password=document.querySelector('#password');
 
@@ -14,20 +16,21 @@ form.addEventListener('submit',(e)=>{
     }
     // console.log(obj);
 
-    axios.post("http://localhost:3000/login",obj)
+    axios.post(`${url}/login`,obj)
     .then((res)=>{
         localStorage.setItem('token',res.data);
         window.location='expense.html';
     })
     .catch(error=>{
-        const message=document.querySelector('#submitMessage');
+        const span=document.querySelector('#submitMessage span');
 
-        const span=document.createElement('span');
         span.innerText='Incorrect Username or Password';
-        // span.classList.toggle('active');
-        message.appendChild(span);
+        span.classList.add('errorMessage');
 
         console.log(error);
-        setTimeout(()=>span.remove(),3000);
+        setTimeout(()=>{
+            span.classList.remove('errorMessage');
+            span.innerText='';
+        },3000);
     });
 })

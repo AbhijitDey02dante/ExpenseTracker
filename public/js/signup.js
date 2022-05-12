@@ -1,3 +1,5 @@
+const url = "http://18.237.245.17:3000";
+
 const nameId=document.querySelector('#name');
 const email=document.querySelector('#email');
 const mobile=document.querySelector('#mobile');
@@ -5,7 +7,6 @@ const password=document.querySelector('#password');
 const cPassword=document.querySelector('#cPassword');
 const confirmPasswordText = document.querySelector('#confirmPasswordText');
 const  submitButton= document.querySelector('#submitButton');
-const submitMessage=document.querySelector('#submitMessage');
 
 const form=document.querySelector('.signupForm');
 
@@ -17,9 +18,9 @@ form.addEventListener('submit',(e)=>{
         mobile:mobile.value,
         password:password.value
     }
-    axios.post("http://localhost:3000/signup",obj)
+    axios.post(`${url}/signup`,obj)
     .then((result)=>{
-        const span=document.createElement('span');
+        const span=document.querySelector('#submitMessage span');
         if(result.data.success){
             span.classList.add('active');
             span.innerText='Successfuly signed up';
@@ -31,11 +32,14 @@ form.addEventListener('submit',(e)=>{
             cPassword.value='';
         }
         else{
-            span.innerText='User already exists, Please Login';
+            span.innerText='Incorrect Username or Password';
+            span.classList.add('errorMessage');
         }
-        submitMessage.appendChild(span);
-        setTimeout(()=>span.remove(),3000);
-
+        setTimeout(()=>{
+            span.classList.remove('active');
+            span.classList.remove('errorMessage');
+            span.innerText='';
+        },3000);
     })
     .catch(error=>console.log(error))
 })

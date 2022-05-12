@@ -51,7 +51,7 @@ input::-webkit-inner-spin-button {
     margin: 0;
     color:green;
 }
-#submitMessage span{
+#submitMessage span.errorMessage{
     background-color: white;
     padding:5px 10px;
     border-radius: 20px;

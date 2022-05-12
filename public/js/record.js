@@ -1,4 +1,4 @@
-const url = "http://localhost:3000";
+const url = "http://18.237.245.17:3000";
 
 const expenseButton=document.querySelector('#expenseButton');
 
