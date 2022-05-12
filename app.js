@@ -1,5 +1,6 @@
 const path=require('path');
 const fs=require('fs');
+const https=require('https');
 
 const express=require('express');
 const cors=require('cors');
@@ -34,9 +35,13 @@ Records.belongsTo(User);
 
 const sequelize=require('./util/database');
 const AuthenticationRouter = require('./routes/Authentication');
+const { Certificate } = require('crypto');
 
 const app=express();
 app.use(express.static(path.join(__dirname, 'public')));
+
+// const privateKey=fs.readFileSync('server.key');
+// const certificate = fs.readFileSync('server.cert');
 
 const accessLogStream=fs.createWriteStream(path.join(__dirname, 'access.log'),{flags:'a'});
 
@@ -53,5 +58,6 @@ sequelize
 .sync()
 .then(()=>{
     app.listen(3000);
+    // https.createServer({key:privateKey,cert:certificate},app).listen(3000);
 })
 .catch((error)=>console.log(error));
