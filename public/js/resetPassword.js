@@ -18,7 +18,6 @@ form.addEventListener('submit',(e)=>{
         destroyForm.forEach(element=>{
             element.remove();
         })
-
     })
     .catch(error=>console.log(error));
 })
