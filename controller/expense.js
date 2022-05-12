@@ -76,7 +76,7 @@ exports.download=async (req,res,next)=>{
         
         const bucketName=process.env.BUCKET_NAME;
         const keyId=process.env.BUCKET_KEY_ID;
-        const secretKey=process.env.BUCKEY_SECRET_KEY;
+        const secretKey=process.env.BUCKET_SECRET_KEY;
         let s3bucket= new AWS.S3({
             accessKeyId:keyId,
             secretAccessKey:secretKey

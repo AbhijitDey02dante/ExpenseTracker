@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oleo+Script+Swash+Caps&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/signup.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <div class="middleContainer">
+        <h1 class="mainHeader">Expense Tracker</h1>
+        <form class="signupForm">
+            <h1>Login</h1>
+            <p id="submitMessage"></p>
+            <div>
+                <p>
+                    <label for="email">Email:</label>
+                    <input type="email" name="email" id="email" required>
+                </p>
+                <p>
+                    <label for="password">Password:</label>
+                    <input type="password" name="password" id="password">
+                </p>
+            </div>
+            <button id="submitButton" type="submit" class="btn">Submit</button>
+            <p>
+                <a href="forgotPassword.html">forgot password?</a>
+            </p>
+            <a id="loginButton" href="signup.html">signup</a>
+        </form>
+    </div>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="js/login.js"></script>
+</body>
+</html>
