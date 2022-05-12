@@ -274,8 +274,8 @@ table.addEventListener('click',(e)=>{
             const pageButton=document.querySelectorAll('#pageNumber span');
             pageButton.forEach(btn=>btn.remove());
             // remove old data
-            const expenseRow=document.querySelectorAll('.expenses');
-            expenseRow.forEach(element=>element.remove());
+            // const expenseRow=document.querySelectorAll('.expenses');
+            // expenseRow.forEach(element=>element.remove());
 
 
             axios.get(`${url}/get_expense?pageItem=${localStorage.getItem('pageItem')}&page=${currentPage}`,configToken)
@@ -320,12 +320,6 @@ table.addEventListener('click',(e)=>{
                     })
             })
             // TEST END*****************************************
-
-
-
-
-
-            
         })
         .catch(error=>console.log(error))
     }

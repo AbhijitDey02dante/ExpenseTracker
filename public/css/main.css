@@ -9,6 +9,7 @@ body{
     padding: 0;
     font-family: sans-serif;
     background-color: rgb(240, 255, 240);
+    transition: all 0.5s;
 }
 .mainHeader{
     font-family: 'Oleo Script Swash Caps', cursive;
