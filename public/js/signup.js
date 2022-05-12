@@ -30,16 +30,20 @@ form.addEventListener('submit',(e)=>{
             mobile.value='';
             password.value='';
             cPassword.value='';
+            setTimeout(()=>{
+                span.classList.remove('active');
+                span.innerText='';
+                window.location='login.html';
+            },3000);
         }
         else{
             span.innerText='Incorrect Username or Password';
             span.classList.add('errorMessage');
+            setTimeout(()=>{
+                span.classList.remove('errorMessage');
+                span.innerText='';
+            },3000);
         }
-        setTimeout(()=>{
-            span.classList.remove('active');
-            span.classList.remove('errorMessage');
-            span.innerText='';
-        },3000);
     })
     .catch(error=>console.log(error))
 })
