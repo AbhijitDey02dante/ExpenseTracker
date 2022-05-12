@@ -3,9 +3,12 @@ const url = "http://18.237.245.17:3000";
 const form = document.querySelector('.signupForm');
 const password=document.querySelector('#password');
 
+console.log('hahaha');
+
 form.addEventListener('submit',(e)=>{
     e.preventDefault();
     const uuid=window.location.href.substring(window.location.href.lastIndexOf('=')+1);
+    console.log(uuid);
     axios.post(`${url}/password/updatepassword`,{uuid:uuid,password:password.value})
     .then(()=>{
         password.value='';
