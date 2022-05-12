@@ -16,14 +16,13 @@ input::-webkit-inner-spin-button {
 }
 
 .middleContainer{
-    height: 100vh;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
 }
 .signupForm{
-    margin: 0 10px;
     text-align: center;
     border-radius: 10px;
     box-shadow: 0 10px 10px rgba(0,0,0,0.5);
