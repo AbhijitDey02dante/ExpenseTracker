@@ -66,8 +66,8 @@ exports.download=async (req,res,next)=>{
         const expense=await Expense.findAll({where:{userId:req.user.id}});
         expense.forEach(element => {
             // console.log(element.description);
-            // let desc=(element.description).replaceAll(',','.');
-           mainData=mainData+`\n${element.createdAt},${element.category},${element.description},Rs. ${element.amount}`;
+            let desc=(element.description).replaceAll(',','.');
+           mainData=mainData+`\n${element.createdAt},${element.category},${desc},Rs. ${element.amount}`;
         });
         const stringifiedExpense=mainData;
         let today=new Date();
