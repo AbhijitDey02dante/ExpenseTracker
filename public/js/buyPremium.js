@@ -1,4 +1,4 @@
-const url = "http://18.237.245.17:3000";
+const url = "http://34.208.105.135:3000";
 
 const buyButton=document.querySelector('#payButton');
 const header2=document.querySelector('.container h2');

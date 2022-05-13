@@ -1,4 +1,4 @@
-const url = "http://18.237.245.17:3000";
+const url = "http://34.208.105.135:3000";
 
 const nameId=document.querySelector('#name');
 const email=document.querySelector('#email');
