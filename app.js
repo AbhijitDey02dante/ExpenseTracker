@@ -3,10 +3,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const url = 'http://34.208.105.135:3000';
 const path = require('path');
 const fs = require('fs');
 const https = require('https');
-const express_1 = __importDefault(require("express"));
+const express =require("express");
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
@@ -29,8 +30,8 @@ User.hasMany(Records);
 Records.belongsTo(User);
 const sequelize = require('./util/database');
 const AuthenticationRouter = require('./routes/Authentication');
-const app = (0, express_1.default)();
-app.use(express_1.default.static(path.join(__dirname, 'public')));
+const app = express();
+// app.use(express_1.default.static(path.join(__dirname, 'public')));
 // const privateKey=fs.readFileSync('server.key');
 // const certificate = fs.readFileSync('server.cert');
 // const accessLogStream=fs.createWriteStream(path.join(__dirname, 'access.log'),{flags:'a'});
@@ -41,7 +42,7 @@ app.use(helmet());
 app.use(bodyParser.json());
 app.use(AuthenticationRouter);
 app.get("/", (req, res) => {
-    res.redirect('http://18.237.245.17:3000/login.html');
+    res.redirect(`${url}/login.html`);
 });
 sequelize
     .sync()

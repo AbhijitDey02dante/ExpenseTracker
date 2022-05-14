@@ -38,4 +38,4 @@ router.post("/password/updatepassword", userController.updatePassword);
 router.get('/download', authenticateToken, expenseController.download);
 router.post('/download_record', authenticateToken, expenseController.updateRecord);
 router.get('/get_record', authenticateToken, expenseController.getRecord);
-exports.default = router;
+module.exports = router;

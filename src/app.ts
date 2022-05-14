@@ -1,3 +1,5 @@
+const url='http://34.208.105.135:3000';
+
 const path=require('path');
 const fs=require('fs');
 const https=require('https');
@@ -51,7 +53,7 @@ app.use(helmet());
 app.use(bodyParser.json());
 app.use(AuthenticationRouter);
 app.get("/", (req, res) => {
-    res.redirect('http://18.237.245.17:3000/login.html');
+    res.redirect(`${url}/login.html`);
 });
 
 
