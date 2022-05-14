@@ -31,7 +31,7 @@ Records.belongsTo(User);
 const sequelize = require('./util/database');
 const AuthenticationRouter = require('./routes/Authentication');
 const app = express();
-// app.use(express_1.default.static(path.join(__dirname, 'public')));
+app.use(express.default.static(path.join(__dirname, 'public')));
 // const privateKey=fs.readFileSync('server.key');
 // const certificate = fs.readFileSync('server.cert');
 // const accessLogStream=fs.createWriteStream(path.join(__dirname, 'access.log'),{flags:'a'});
