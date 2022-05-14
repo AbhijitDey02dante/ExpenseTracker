@@ -165,17 +165,12 @@ exports.updateAmount = (req, res, next) => {
 // };
 
 exports.getLeaderboard = (req, res, next) => {
-    User.findAll({
+    Expense.findAll({
         attributes:[
-            'name',
+            'amount',
+            'userID'
         ],
-        include:[
-            {
-                model:Expense,
-                attributes:[[sequelize.fn('sum',sequelize.col('Expense.amount')),'total_cost']]
-            }
-        ],
-        group:['id'],
+            group:['userId'],
         order: [
             ['spent', 'DESC']
         ]
