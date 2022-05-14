@@ -168,7 +168,7 @@ exports.getLeaderboard = (req, res, next) => {
     Expense.findAll({
         attributes:[
             'amount',
-            'userID'
+            'userId'
         ],
             group:['userId'],
         order: [
