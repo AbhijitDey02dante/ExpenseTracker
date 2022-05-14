@@ -170,10 +170,7 @@ exports.getLeaderboard = (req, res, next) => {
             'amount',
             'userId'
         ],
-            group:['userId'],
-        order: [
-            ['spent', 'DESC']
-        ]
+            group:['userId']
     })
         .then((result) => {
             console.log(result);
