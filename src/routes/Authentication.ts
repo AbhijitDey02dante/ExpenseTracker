@@ -1,17 +1,17 @@
-const express=require('express');
-const jwt=require('jsonwebtoken');
+import { Router } from 'express';
+import jwt from 'jsonwebtoken';
 
-const router=express.Router();
+const router=Router();
 
 
 
-function authenticateToken(req, res, next) {
+function authenticateToken(req:any, res:any, next:any) {
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
   
     if (token == null) return res.sendStatus(401)
   
-    jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
+    jwt.verify(token, process.env.TOKEN_SECRET!, (err:any, user:any) => {
       if (err) return res.sendStatus(403)
       req.user = user
       next()
@@ -47,4 +47,4 @@ router.post('/download_record',authenticateToken,expenseController.updateRecord)
 router.get('/get_record',authenticateToken,expenseController.getRecord);
 
 
-module.exports=router;
+export default router;

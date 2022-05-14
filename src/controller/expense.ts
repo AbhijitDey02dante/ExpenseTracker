@@ -1,10 +1,13 @@
-const AWS=require('aws-sdk');
+import AWS from 'aws-sdk';
 
 const Expense=require('../model/expense');
 const User = require('../model/user');
 const Records = require('../model/downloadRecord');
 
-exports.postExpense = (req,res,next)=>{
+
+import { expenseObj,paramsObj } from "../model/interface";
+
+exports.postExpense = (req:any,res:any,next:any)=>{
     const obj={
         userId:req.user.id,
         amount:req.body.amount,
@@ -12,40 +15,40 @@ exports.postExpense = (req,res,next)=>{
         description:req.body.description
     }
     Expense.create(obj)
-    .then((result)=>res.json(result))
-    .catch(error=>res.json({success:false}))
+    .then((result:expenseObj)=>res.json(result))
+    .catch((error:string)=>res.json({success:false}))
 }
 
 
 
-exports.getExpense=(req,res,next)=>{
+exports.getExpense=(req:any,res:any,next:any)=>{
     let ITEMS_PER_PAGE= +req.query.pageItem || 10;
     const page = +req.query.page || 1;
-    let totalItems;
+    let totalItems:expenseObj;
 
     Expense.count({where:{userId:req.user.id}})
-    .then(numProducts=>{
+    .then((numProducts:expenseObj)=>{
         totalItems=numProducts;
         return Expense.findAll({where:{userId:req.user.id},limit:ITEMS_PER_PAGE , offset:(page-1)*ITEMS_PER_PAGE})
     })
-    .then(result=>{
+    .then((result:expenseObj[])=>{
         const detailedExpense = [{total: totalItems},[...result]];
         res.status(200).json(detailedExpense);
     })
-    .catch(error=>console.log(error))
+    .catch((error:string)=>console.log(error))
 }
 
-exports.deleteExpense=(req,res,next)=>{
-    let amount;
+exports.deleteExpense=(req:any,res:any,next:any)=>{
+    let amount:number;
     Expense.findAll({where:{id:req.body.id}})
-    .then(element=>{
+    .then((element:any)=>{
         amount=element[0].amount;
         return element[0].destroy()
     })
     .then(()=>{
         return User.findAll({where:{id:req.user.id}})
     })
-    .then(result=>{
+    .then((result:any)=>{
         console.log(result[0].spent);
         result[0].spent=result[0].spent - +amount;
         return result[0].save();
@@ -53,25 +56,24 @@ exports.deleteExpense=(req,res,next)=>{
     .then(()=>{
         res.status(200).json({success:true});
     })
-    .catch(error=>{
+    .catch((error:string)=>{
         console.log(error);
         res.status(500).json({success:false});
     })
 }
 
 // Download via S3
-exports.download=async (req,res,next)=>{
+exports.download=async (req:any,res:any,next:any)=>{
     let mainData='Created,Category,Description,Amount'
     try{
         const expense=await Expense.findAll({where:{userId:req.user.id}});
-        expense.forEach(element => {
+        expense.forEach((element:any) => {
             // console.log(element.description);
             let desc=(element.description).replaceAll(',','.');
            mainData=mainData+`\n${element.createdAt},${element.category},${desc},Rs. ${element.amount}`;
         });
         const stringifiedExpense=mainData;
-        let today=new Date();
-        today=today.toString();
+        let today:any=new Date().toString();
         const filename = `Expense_${req.user.id}_${today.replaceAll(' ','_')}.csv`;
         //****************************** */
         
@@ -83,13 +85,13 @@ exports.download=async (req,res,next)=>{
             secretAccessKey:secretKey
         })
 
-        let params ={
+        let params:paramsObj ={
             Bucket:bucketName,
             Key:filename,
             Body: stringifiedExpense,
             ACL:'public-read'
         }
-        s3bucket.upload(params,async (error,response)=>{
+        s3bucket.upload(params,async (error:any,response:any)=>{
             if(error){
                 res.status(500).json({error,success:true});
             }
@@ -103,7 +105,7 @@ exports.download=async (req,res,next)=>{
     }
 }
 
-exports.updateRecord=(req,res,next)=>{
+exports.updateRecord=(req:any,res:any,next:any)=>{
     Records.create({
         name:req.body.Key,
         url:req.body.Location,
@@ -113,17 +115,17 @@ exports.updateRecord=(req,res,next)=>{
     .then(()=>{
         res.status(200).json({success:true});
     })
-    .catch(error=>{
+    .catch((error:string)=>{
         console.log(error);
         res.status(500).json({success:false});
     });
 }
 
-exports.getRecord=(req,res,next)=>{
+exports.getRecord=(req:any,res:any,next:any)=>{
     Records.findAll({where:{userId:req.user.id}})
-    .then(result=>res.status(200).json(result))
-    .catch(error=>{
+    .then((result:any)=>res.status(200).json(result))
+    .catch((error:string)=>{
         console.log(error);
-        res.status(500).json({success:fail});
+        res.status(500).json({success:"fail"});
     })
 }

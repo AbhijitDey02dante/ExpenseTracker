@@ -2,7 +2,7 @@ const path=require('path');
 const fs=require('fs');
 const https=require('https');
 
-const express=require('express');
+import express from 'express';
 const cors=require('cors');
 const bodyParser=require('body-parser');
 const dotenv=require('dotenv');
@@ -62,4 +62,4 @@ sequelize
     app.listen(3000);
     // https.createServer({key:privateKey,cert:certificate},app).listen(3000);
 })
-.catch((error)=>console.log(error));
+.catch((error:string)=>console.log(error));

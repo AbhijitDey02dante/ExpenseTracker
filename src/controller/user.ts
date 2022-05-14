@@ -13,7 +13,9 @@ const { Op } = require("sequelize");
 
 const User=require('../model/user');
 
-exports.addUser=async (req,res,next)=>{
+import { userObj,orderObj } from "../model/interface";
+
+exports.addUser=async (req:any,res:any,next:any)=>{
     try{
         const salt=await bcrypt.genSalt(10);
         const encryptedPassword=await bcrypt.hash(req.body.password,salt);
@@ -25,11 +27,11 @@ exports.addUser=async (req,res,next)=>{
             password:encryptedPassword,
             premium:0
         })
-        .then((result)=>{
+        .then((result:userObj)=>{
             console.log('added');
             res.json({success:true});
         })
-        .catch((error)=>{
+        .catch((error:string)=>{
             console.log(error);
             res.json({success:false})
         })
@@ -40,21 +42,21 @@ exports.addUser=async (req,res,next)=>{
     }
 }
 
-function generateAccessToken(id){
+function generateAccessToken(id:any){
     return jwt.sign(id,process.env.TOKEN_SECRET);
 }
 
 
-exports.getUser = (req,res,next) => {
+exports.getUser = (req:any,res:any,next:any) => {
     const email=req.body.email;
     User.findAll({where:{email:email}})
-    .then(result=>{
-        bcrypt.compare(req.body.password,result[0].password, function(error,resolved){
+    .then((result:userObj[])=>{
+        bcrypt.compare(req.body.password,result[0].password, function(error:any,resolved:any){
             if(error){
                 console.log("error");
             }
             if(resolved){
-                const obj={
+                const obj:any={
                     id:`${result[0].id}`
                 }
                 const token=generateAccessToken(JSON.stringify(obj));
@@ -65,15 +67,15 @@ exports.getUser = (req,res,next) => {
             }
         })
     })
-    .catch(error=>{
+    .catch((error:string)=>{
         res.status(404).json({success:false,message:"User not found"});
     })
 }
 
-exports.checkUser=(req,res,next)=>{
+exports.checkUser=(req:any,res:any,next:any)=>{
     User.findAll({where:{id:req.user.id}})
-    .then(result=>res.json(result))
-    .catch(error=>console.log(error));
+    .then((result:userObj)=>res.json(result))
+    .catch((error:string)=>console.log(error));
 }
 
 
@@ -83,19 +85,19 @@ var instance = new Razorpay({
     key_secret: process.env.RAZOR_KEY_SECRET,
 });
 
-exports.buyPremium=(req,res,next)=>{
+exports.buyPremium=(req:any,res:any,next:any)=>{
     console.log(req.body);
     var options = {
         amount: req.body.amount,  // amount in the smallest currency unit
         currency: "INR",
         receipt: "rcp1"
     };
-    instance.orders.create(options, function(err,order){
+    instance.orders.create(options, function(err:any,order:any){
         res.json({orderId:order.id});
     })
 }
 
-exports.paymentVerify=(req,res)=>{
+exports.paymentVerify=(req:any,res:any)=>{
     let body=req.body.response.razorpay_order_id + "|" + req.body.response.razorpay_payment_id;
      let crypto = require("crypto");
      let expectedSignature = crypto.createHmac('sha256', process.env.RAZOR_KEY_SECRET)
@@ -109,38 +111,38 @@ exports.paymentVerify=(req,res)=>{
         res.send(response);
      }
 
-exports.addOrder=(req,res,next)=>{
+exports.addOrder=(req:any,res:any,next:any)=>{
     Order.create({orderId:req.body.orderid, userId:req.user.id})
     .then(()=>res.json({success:true}))
-    .catch(error=>console.log(error));
+    .catch((error:string)=>console.log(error));
 }
 
-exports.getOrder=(req,res,next)=>{
-    let finalValue;
+exports.getOrder=(req:any,res:any,next:any)=>{
+    let finalValue:orderObj[];
     Order.findAll({where:{userId:req.user.id}})
-    .then((output)=>{
+    .then((output:orderObj[])=>{
         finalValue=output;
         if(output.length>0){
             User.findAll({where:{id:req.user.id}})
-            .then(user=>{
+            .then((user:any)=>{
                 console.log('Changed premium');
                 user[0].premium=1;
                 return user[0].save()
             })
             .then()
-            .catch(error=>console.log(error))
+            .catch((error:string)=>console.log(error))
         }
     })
     .then(()=>{
         console.log('Finding order');
         res.json(finalValue);
     })
-    .catch(error=>console.log(error));
+    .catch((error:any)=>console.log(error));
 }
 
-exports.updateAmount=(req,res,next)=>{
+exports.updateAmount=(req:any,res:any,next:any)=>{
     User.findAll({where:{id:req.user.id}})
-    .then(result=>{
+    .then((result:any)=>{
         if(result[0].spent)
         {
             result[0].spent+= +req.body.amount;
@@ -151,13 +153,13 @@ exports.updateAmount=(req,res,next)=>{
         result[0].save();
         res.status(200).json({sucess:true});
     })
-    .catch(error=>{
+    .catch((error:string)=>{
         console.log(error);
         res.status(500).json({sucess:false});
     })
 }
 
-exports.getLeaderboard = (req,res,next)=>{
+exports.getLeaderboard = (req:any,res:any,next:any)=>{
     User.findAll({
         where:{
             spent:{[Op.ne]:null}
@@ -166,8 +168,8 @@ exports.getLeaderboard = (req,res,next)=>{
             ['spent','DESC']
         ]
     })
-    .then(result=>res.json(result))
-    .catch(error=>console.log(error))
+    .then((result:userObj)=>res.json(result))
+    .catch((error:string)=>console.log(error))
 }
 
 
@@ -175,10 +177,10 @@ exports.getLeaderboard = (req,res,next)=>{
 var SibApiV3Sdk = require('sib-api-v3-sdk');
 SibApiV3Sdk.ApiClient.instance.authentications['api-key'].apiKey = process.env.MAIL_API_KEY;
 
-exports.sendMail=(req,res,next)=>{
+exports.sendMail=(req:any,res:any,next:any)=>{
     User.findAll({where:{email:req.body.email}})
-    .then((users)=>{
-        let userId;
+    .then((users:userObj[])=>{
+        let userId:any;
         try{
             userId=users[0].id;
         }
@@ -210,7 +212,7 @@ exports.sendMail=(req,res,next)=>{
             }
         ]
 
-        }).then(function(data) {
+        }).then(function(data:string) {
         console.log(data);
         ForgotPasswordRequest.create({
             uuid:newId,
@@ -218,33 +220,33 @@ exports.sendMail=(req,res,next)=>{
             userId:userId
         })
         .then(()=>res.json({success:true}))
-        .catch(error=>console.log(error));
+        .catch((error:string)=>console.log(error));
 
 
-            }, function(error) {
+            }, function(error:string) {
             console.error(error);
             });
         }
     })
-    .catch(error=>console.log(error));
+    .catch((error:string)=>console.log(error));
 }
 
 
-exports.resetPassword=(req,res,next)=>{
+exports.resetPassword=(req:any,res:any,next:any)=>{
     const uuid=req.params.uuid;
     console.log(req.params.uuid);
     ForgotPasswordRequest.findAll({where:{uuid:uuid,isactive:1}})
-    .then((user)=>{
+    .then((user:any)=>{
         if(user.length>0)
             // res.sendFile('resetPassword.html', { root: path.join(__dirname, '../public') });
             res.redirect(`${url}/resetPassword.html?id=${uuid}`);
         else
             res.send('<h1>password link expired</h1>')
     })
-    .catch(error=>console.log(error))
+    .catch((error:any)=>console.log(error))
 }
 
-exports.updatePassword=async (req,res,next)=>{
+exports.updatePassword=async (req:any,res:any,next:any)=>{
     const uuid=req.body.uuid;
     const password=req.body.password;
     try{
@@ -252,9 +254,9 @@ exports.updatePassword=async (req,res,next)=>{
         const encryptedPassword=await bcrypt.hash(password,salt);
         console.log(uuid,password);
         ForgotPasswordRequest.findAll({where:{uuid:uuid}})
-        .then(element=>{
+        .then((element:any)=>{
             User.findAll({where:{id:element[0].userId}})
-            .then(user=>{
+            .then((user:any)=>{
                 user[0].password=encryptedPassword;
                 return user[0].save()
             })
@@ -266,9 +268,9 @@ exports.updatePassword=async (req,res,next)=>{
                 console.log('updated');
                 res.send('<h2>Password updated, please go to main page to login!</h2>');
             })
-            .catch(error=>console.log(error));
+            .catch((error:string)=>console.log(error));
         })
-        .catch(error=>console.log(error));
+        .catch((error:string)=>console.log(error));
     }
     catch(error){
         console.log(error);
