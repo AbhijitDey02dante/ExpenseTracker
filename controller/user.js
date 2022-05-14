@@ -15,6 +15,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Razorpay = require('razorpay');
 const Order = require('../model/order');
+const Expense = require('../model/expense');
 const ForgotPasswordRequest = require('../model/forgotPasswordRequest');
 const { v4: uuidv4 } = require('uuid');
 const { Op } = require("sequelize");
@@ -149,19 +150,46 @@ exports.updateAmount = (req, res, next) => {
         res.status(500).json({ sucess: false });
     });
 };
+
+// exports.getLeaderboard = (req, res, next) => {
+//     User.findAll({
+//         where: {
+//             spent: { [Op.ne]: null }
+//         },
+//         order: [
+//             ['spent', 'DESC']
+//         ]
+//     })
+//         .then((result) => res.json(result))
+//         .catch((error) => console.log(error));
+// };
+
 exports.getLeaderboard = (req, res, next) => {
     User.findAll({
-        where: {
-            spent: { [Op.ne]: null }
-        },
+        attributes:[
+            'name',
+        ],
+        include:[
+            {
+                model:Expense,
+                attributes:[[sequelize.fn('sum',sequelize.col('Expense.amount')),'total_cost']]
+            }
+        ],
+        group:['id'],
         order: [
             ['spent', 'DESC']
         ]
     })
-        .then((result) => res.json(result))
+        .then((result) => {
+            console.log(result);
+            res.json(result)
+        })
         .catch((error) => console.log(error));
 };
+
+
 var SibApiV3Sdk = require('sib-api-v3-sdk');
+const sequelize = require('sequelize');
 SibApiV3Sdk.ApiClient.instance.authentications['api-key'].apiKey = process.env.MAIL_API_KEY;
 exports.sendMail = (req, res, next) => {
     User.findAll({ where: { email: req.body.email } })
