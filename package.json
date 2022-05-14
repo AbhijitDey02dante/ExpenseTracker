@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon dist/app"
+    "start": "nodemon app"
   },
   "author": "Abhijit Dey",
   "license": "ISC",
